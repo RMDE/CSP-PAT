@@ -1,38 +1,57 @@
 #include<stdio.h>
 #include<stdlib.h>
+
+struct Node{
+	int index;
+	int value;
+	struct Node *next;
+};
+
 int main()
 {
 	long long int n;
 	int a,b;
-	scanf("%d %d %d",&n,&a,&b);
-	long long int u[a][2],v[b][2];
+	scanf("%lld %d %d",&n,&a,&b);
+	Node *u,*v;
+	u = (Node*)malloc(sizeof(Node));
+	u->next = NULL;
+	v = (Node*)malloc(sizeof(Node));
+	v->next = NULL;
+	Node *p = NULL,*q = NULL;
 	for(int i=0;i<a;i++)
 	{
-		scanf("%lld %lld",&u[i][0],&u[i][1]);
+		p =(Node*)malloc(sizeof(Node));
+		scanf("%d %d",&p->index,&p->value);
+		p->next = u->next;
+		u->next = (Node*)p;
 	}
 	for(int i=0;i<b;i++)
 	{
-		scanf("%lld %lld",&v[i][0],&v[i][1]);
+		p =(Node*)malloc(sizeof(Node));
+		scanf("%d %d",&p->index,&p->value);
+		p->next = v->next;
+		v->next = (Node*)p;
 	}
-	int k1 = 0,k2 = 0;
-	double sum = 0;
-	while(k1<a && k2<b)
+	p = u->next;
+	q = v->next;
+	long long int sum = 0;
+	while(p!=NULL && q!=NULL)
 	{
-		while( v[k2][0]<u[k1][0])
+		if(q->index > p->index)
 		{
-			k2++;
+			q = q->next;
 		}
-		if(v[k2][0]==u[k1][0])
+		else if(p->index == q->index)
 		{
-			sum += v[k2][1]*u[k1][1];
-			k2++;
-			k1++;
+			sum += p->value*q->value;
+			p = p->next;
+			q = q->next;
 		}
-		while(v[k2][0]>u[k1][0])
+		else
 		{
-			k1++;
+			p = p->next;
 		}
 	}
-	printf("%lld",(int)sum);
+	printf("%lld\n",sum);
 	return 0;
 }
